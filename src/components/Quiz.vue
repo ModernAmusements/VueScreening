@@ -4,25 +4,41 @@
       
       <div :key="currentQuestion">
 
-        <div class="quiz-counter" v-if="stage === 'quiz'">{{currentQuestion}} / {{questions.length}}</div>
-
-        <Code v-if="stage === 'quiz'" :code="questions[currentQuestion-1].code" />
+        <div class="quiz-counter" v-if="stage === 'quiz'">
+          <span class="current-question">{{currentQuestion}}</span> von {{questions.length}}
+        </div>
         <h1
-          v-if="stage === 'quiz'"
-          class="quiz-heading"
-          v-html="questions[currentQuestion-1].title !== null ? (questions[currentQuestion-1].title) : questions[currentQuestion-1].title"
-        ></h1>
+          v-if="stage === 'welcome'"
+          class="welcome-heading"
+        >Willkommen beim Screening</h1>
+        <p class="quiz-result" v-if="stage === 'welcome'">
+           Ihre Mail-Adresse wird zu keinem Zeitpunkt mit Ihren 
+           hier oder später angegebenen Antworten in Verbindung gebracht 
+           oder an Dritte weitergereicht. Die Angabe der Mail-Adresse ist 
+           freiwillig, aber notwendig um an der Studie teilzunehmen und 
+           weitere Informationen zu erhalten.“ 
+
+        </p>
         <a
           href="#start-quiz"
           class="btn btn-lg btn-neutral"
           @click.prevent="initQuizStage"
           v-if="stage === 'welcome'"
         >Screening Starten</a>
+
+
+        <h1
+          v-if="stage === 'quiz'"
+          class="quiz-heading"
+          v-html="questions[currentQuestion-1].title !== null ? (questions[currentQuestion-1].title) : questions[currentQuestion-1].title"
+        ></h1>
+
+
         <span
           class="modal_why"
           v-if="stage === 'results'"
           @click="toggleModal"
-        >Erklärung</span>
+        >So geht es weiter</span>
         <!-- Modal -->
         <explanation-modal
           :content="quizExplanation"
@@ -81,7 +97,7 @@
 <script>
 import { store, mutations, actions } from "../store"
 import { version as appVersion } from "../../package.json"
-import Code from './Code'
+
 
 import ExplanationModal from '../components/Modal'
 
@@ -89,7 +105,6 @@ import ExplanationModal from '../components/Modal'
 export default {
   name: "Quiz",
   components: {
-    Code,
     ExplanationModal
   },
   data() {
@@ -122,17 +137,37 @@ export default {
     resultsInfo() {
       if (this.correctAnswers < 0) {
         return {
-          text: "Sie können nicht teihnehmen ",
+          text: "Vielen Dank für Ihre Zeit, leider kommen Sie nicht für die Studie in Frage",
         }
       }
-        if (this.correctAnswers < 6) {
+      if (this.correctAnswers < 1) {
         return {
-          text: "Sie können nicht teihnehmen  ",
+          text: "Vielen Dank für Ihre Zeit, leider kommen Sie nicht für die Studie in Frage",
         }
       }
-      if (this.correctAnswers == 7) {
+      if (this.correctAnswers < 2) {
         return {
-          text: "Sie können teihnehmen ",
+          text: "Vielen Dank für Ihre Zeit, leider kommen Sie nicht für die Studie in Frage",
+        }
+      }
+        if (this.correctAnswers < 3) {
+        return {
+          text: "Vielen Dank für Ihre Zeit, leider kommen Sie nicht für die Studie in Frage",
+        }
+      }
+      if (this.correctAnswers < 4) {
+        return {
+          text: "Vielen Dank für Ihre Zeit, leider kommen Sie nicht für die Studie in Frage",
+        }
+      }
+    if (this.correctAnswers < 5) {
+        return {
+          text: "Vielen Dank für Ihre Zeit. Glückwunsch, Sie können an der Studie teilnehmen!",
+        }
+      }
+      if (this.correctAnswers == 6) {
+        return {
+          text: "Vielen Dank für Ihre Zeit. Glückwunsch, Sie können an der Studie teilnehmen!",
         }
       }
        else {
@@ -308,9 +343,11 @@ a {
 .quiz-counter {
   position: absolute;
   top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 14px;
+  font-weight: 500;
+  .current-question{
+    font-size: 22px;
+  }
 }
 @media (min-width: 600px) {
   .quiz-counter {
@@ -335,6 +372,15 @@ a {
   line-height: 1.8;
   font-weight: 600;
   color: #3F414E;
+  text-align: left;
+}
+.welcome-heading {
+  margin: 20px 0;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  font-weight: 600;
+  color: #3F414E;
+  text-align: center;
 }
 @media (min-width: 600px) {
   .quiz-heading {
@@ -345,7 +391,7 @@ a {
 
 .quiz-result {
   margin: 20px 0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.4rem;
   letter-spacing: 1px;
 }
@@ -398,10 +444,10 @@ a {
 }
 
 .quiz-question-button.correct {
-  background: #5ba55b;
+  background: #28a745;
 }
 .quiz-question-button.wrong {
-  background: #cc5454;
+  background: #dc3545;
 }
 @media (min-width: 600px) {
   .quiz-question-button {

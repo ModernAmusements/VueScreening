@@ -62,7 +62,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(3, 135, 199);
+  background-color: #93BFA8;
   transition: .4s ease-in-out;
   &:hover {
     transform: rotate(0.75turn);
@@ -81,9 +81,6 @@ export default {
 }
 
 .explanation-modal {
-  font-family: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
-    "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", arial,
-    sans-serif;
   color: rgba(0, 0, 0, 0.8);
   text-align: left;
 }
@@ -91,13 +88,12 @@ export default {
 .explanation_text {
   height: 400px;
   overflow-y: scroll;
-  background-color: #181e24;
+  background-color: #3F414E;
   border-radius: 4px;
   padding: 24px 20px;
-  text-align: justify;
+  text-align: left;
   line-height: 1.5rem;
-  color: darkgray;
-  font-family: "jf-openhuninn";
+  color: #fff;
   img {
     margin: 12px 0;
   }
